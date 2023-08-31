@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Item List</title>
+    <style>
+      .item {
+          margin: 10px;
+          padding: 10px;
+          border: 1px solid #ccc;
+      }
+  </style>
+</head>
+<body>
+    <div id="itemList"></div>
+    <button id="addItemBtn">Add Item</button>
+
+    <script>
+        const itemList = document.getElementById("itemList");
+        const addItemBtn = document.getElementById("addItemBtn");
+
+        let itemCount = 0;
+
+        addItemBtn.addEventListener("click", () => {
+            itemCount++;
+
+            const itemDiv = document.createElement("div");
+            itemDiv.classList.add("item");
+
+            const itemName = createInput("Item Name");
+            const itemDescription = createInput("Description");
+            const itemPrice = createInput("Price");
+
+            const itemTotal = document.createElement("span");
+
+            const itemNo = document.createElement("span");
+            itemNo.textContent = `Item ${itemCount}:`;
+
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.addEventListener("click", () => {
+                itemList.removeChild(itemDiv);
+            });
+
+            itemDiv.appendChild(itemNo);
+            itemDiv.appendChild(itemName);
+            itemDiv.appendChild(itemDescription);
+            itemDiv.appendChild(itemPrice);
+            itemDiv.appendChild(itemTotal);
+            itemDiv.appendChild(removeButton);
+
+            itemList.appendChild(itemDiv);
+        });
+
+        function createInput(placeholder) {
+            const input = document.createElement("input");
+            input.placeholder = placeholder;
+            input.addEventListener("input", updateTotal);
+            return input;
+        }
+
+        function updateTotal() {
+            const itemDiv = this.closest(".item");
+            const price = parseFloat(itemDiv.querySelector("input[placeholder='Price']").value) || 0;
+            const totalSpan = itemDiv.querySelector("span");
+            totalSpan.textContent = `Total: $${price.toFixed(2)}`;
+        }
+    </script>
+
+    <style>
+        .item {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</body>
+</html>
